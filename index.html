@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>BlockHunt '26</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&family=Google+Sans:wght@400;500;600;700:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ── tokens ── */
+    :root {
+      --primary:      #ff4f00;
+      --on-primary:   #fffefb;
+      --ink:          #201515;
+      --ink-soft:     #2f2a26;
+      --ink-mid:      #36342e;
+      --body-color:   #605d52;
+      --body-mid:     #939084;
+      --mute:         #c5c0b1;
+      --canvas:       #fffefb;
+      --canvas-soft:  #f8f4f0;
+
+      --r-sm: 6px;
+      --r-md: 12px;
+      --r-pill: 9999px;
+
+      --sp-xxs: 2px; --sp-xs: 4px; --sp-sm: 8px; --sp-md: 12px;
+      --sp-lg: 16px; --sp-xl: 24px; --sp-2xl: 32px; --sp-3xl: 48px;
+      --sp-4xl: 64px;
+
+      --font-display: 'Pixelify Sans', 'Google Sans', system-ui, sans-serif;
+      --font-body:    'Google Sans', system-ui, sans-serif;
+      --font-mono:    ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, monospace;
+
+      box-sizing: border-box;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    *, *::before, *::after { box-sizing: inherit; }
+
+    html { color-scheme: light; }
+html, body {
+      margin: 0; padding: 0;
+      background: var(--canvas);
+      color: var(--ink);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+    }
+
+    /* ── nav ── */
+    .nav {
+      position: sticky; top: env(safe-area-inset-top, 0px);
+      z-index: 100;
+      background: var(--canvas);
+      border-bottom: 1px solid var(--mute);
+      padding: var(--sp-md) var(--sp-xl);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-size: 22px;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+    .nav-logo span { color: var(--primary); }
+    .nav-links {
+      display: flex; gap: var(--sp-xl); align-items: center;
+      list-style: none; margin: 0; padding: 0;
+    }
+    .nav-links a {
+      color: var(--ink); text-decoration: none;
+      font-size: 15px; font-weight: 500;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: var(--primary); }
+    .nav-cta {
+      background: var(--primary); color: var(--on-primary);
+      border: none; border-radius: var(--r-md);
+      padding: var(--sp-sm) var(--sp-xl);
+      font-family: var(--font-body); font-size: 15px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.88; }
+
+    /* hamburger */
+    .hamburger { display: none; background: none; border: none; cursor: pointer; padding: var(--sp-sm); }
+    .hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--ink); margin: 5px 0; border-radius: 2px;
+      transition: all 0.2s;
+    }
+
+    /* ── container ── */
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 var(--sp-xl); }
+
+    /* ── hero ── */
+    .hero {
+      background: var(--canvas);
+      padding: var(--sp-4xl) var(--sp-xl);
+    }
+    .hero-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--sp-3xl); align-items: center;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--body-mid); margin-bottom: var(--sp-lg);
+    }
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(42px, 6vw, 64px);
+      font-weight: 400;
+      line-height: 1;
+      letter-spacing: 1px;
+      margin: 0 0 var(--sp-xl);
+      color: var(--ink);
+    }
+    .hero-headline .accent { color: var(--primary); }
+    .hero-sub {
+      font-size: 18px; line-height: 1.6;
+      color: var(--body-color);
+      margin: 0 0 var(--sp-2xl);
+      max-width: 480px;
+    }
+    .hero-meta {
+      display: flex; gap: var(--sp-xl); flex-wrap: wrap;
+      margin-bottom: var(--sp-2xl);
+    }
+    .hero-meta-item {
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .hero-meta-label {
+      font-size: 13px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--body-mid);
+    }
+    .hero-meta-value {
+      font-family: var(--font-display);
+      font-size: 20px; color: var(--ink);
+    }
+    .hero-actions { display: flex; gap: var(--sp-md); flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--primary); color: var(--on-primary);
+      border: none; border-radius: var(--r-md);
+      padding: var(--sp-md) var(--sp-xl);
+      font-family: var(--font-body); font-size: 17px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: var(--sp-sm);
+      transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary {
+      background: var(--ink); color: var(--on-primary);
+      border: none; border-radius: var(--r-md);
+      padding: var(--sp-md) var(--sp-xl);
+      font-family: var(--font-body); font-size: 17px; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      display: inline-flex; align-items: center; gap: var(--sp-sm);
+      transition: opacity 0.15s;
+    }
+    .btn-secondary:hover { opacity: 0.8; }
+
+    /* hero visual */
+    .hero-visual {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .chain-viz {
+      display: flex; flex-direction: column; gap: 0; width: 100%; max-width: 400px;
+    }
+    .block-card {
+      background: var(--canvas-soft);
+      border: 1px solid var(--mute);
+      border-radius: var(--r-md);
+      padding: var(--sp-lg);
+      margin-bottom: 6px;
+      position: relative;
+    }
+    .block-card.active-block { border-color: var(--primary); border-width: 2px; }
+    .block-number {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px;
+      color: var(--body-mid); text-transform: uppercase;
+      margin-bottom: var(--sp-xs);
+    }
+    .block-hash {
+      font-family: var(--font-mono);
+      font-size: 13px; color: var(--primary);
+      word-break: break-all; margin-bottom: var(--sp-xs);
+    }
+    .block-data {
+      font-size: 12px; color: var(--body-color);
+      display: flex; gap: var(--sp-md);
+    }
+    .block-arrow {
+      text-align: center; color: var(--mute);
+      font-family: var(--font-display); font-size: 18px;
+      line-height: 1; margin: -2px 0;
+    }
+    .block-card.dark-block {
+      background: var(--ink); color: var(--on-primary);
+      border-color: var(--ink);
+    }
+    .block-card.dark-block .block-number { color: var(--mute); }
+    .block-card.dark-block .block-data { color: var(--canvas-soft); }
+
+    /* ── prize band ── */
+    .prize-band {
+      background: var(--ink);
+      padding: var(--sp-4xl) var(--sp-xl);
+    }
+    .prize-band-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: auto 1fr;
+      gap: var(--sp-4xl); align-items: center;
+    }
+    .prize-eyebrow {
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--mute); margin-bottom: var(--sp-lg);
+    }
+    .prize-headline {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 5vw, 54px);
+      color: var(--on-primary); margin: 0 0 var(--sp-md);
+    }
+    .prize-sub {
+      font-size: 16px; color: var(--mute); margin: 0;
+      max-width: 340px;
+    }
+    .prize-tiers {
+      display: flex; gap: var(--sp-lg); flex-wrap: wrap;
+    }
+    .prize-card {
+      background: var(--canvas);
+      border-radius: var(--r-md);
+      padding: var(--sp-xl);
+      min-width: 140px; flex: 1;
+      text-align: center;
+    }
+    .prize-card.featured-prize {
+      background: var(--primary);
+      color: var(--on-primary);
+    }
+    .prize-rank {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--body-mid); margin-bottom: var(--sp-sm);
+    }
+    .prize-card.featured-prize .prize-rank { color: rgba(255,255,255,0.75); }
+    .prize-amount {
+      font-family: var(--font-display);
+      font-size: 32px; font-weight: 400;
+      color: var(--ink);
+    }
+    .prize-card.featured-prize .prize-amount { color: var(--on-primary); }
+
+    /* ── stages section ── */
+    .stages-section {
+      background: var(--canvas-soft);
+      padding: var(--sp-4xl) var(--sp-xl);
+    }
+    .section-eyebrow {
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--body-mid); margin-bottom: var(--sp-md);
+    }
+    .section-headline {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 4vw, 42px);
+      margin: 0 0 var(--sp-sm); color: var(--ink);
+    }
+    .section-sub {
+      font-size: 18px; color: var(--body-color);
+      margin: 0 0 var(--sp-3xl); max-width: 560px;
+      line-height: 1.65;
+    }
+    .stages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: var(--sp-lg);
+    }
+    .stage-card {
+      background: var(--canvas);
+      border-radius: var(--r-md);
+      padding: var(--sp-xl);
+      display: flex; flex-direction: column; gap: var(--sp-md);
+      border: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+    .stage-card:hover { border-color: var(--mute); }
+    .stage-card.dark-stage {
+      background: var(--ink); color: var(--on-primary);
+    }
+    .stage-card.bonus-stage {
+      background: var(--canvas); border: 1px solid var(--ink);
+    }
+    .stage-header {
+      display: flex; align-items: center; gap: var(--sp-md);
+    }
+    .stage-num {
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--body-mid); flex-shrink: 0;
+    }
+    .stage-card.dark-stage .stage-num { color: var(--mute); }
+    .stage-badge {
+      background: var(--canvas-soft);
+      color: var(--ink); font-size: 11px; font-weight: 600;
+      padding: 2px var(--sp-md); border-radius: var(--r-pill);
+      letter-spacing: 0.5px; text-transform: uppercase;
+    }
+    .stage-card.dark-stage .stage-badge { background: var(--ink-mid); color: var(--on-primary); }
+    .stage-badge.bonus { background: var(--primary); color: var(--on-primary); }
+    .stage-title {
+      font-family: var(--font-display);
+      font-size: 22px; margin: 0; line-height: 1.1;
+      color: var(--ink);
+    }
+    .stage-card.dark-stage .stage-title { color: var(--on-primary); }
+    .stage-desc {
+      font-size: 16px; line-height: 1.6; color: var(--body-color);
+      margin: 0; flex: 1;
+    }
+    .stage-card.dark-stage .stage-desc { color: var(--mute); }
+    .stage-meta {
+      display: flex; gap: var(--sp-sm); align-items: center;
+      flex-wrap: wrap;
+    }
+    .stage-points {
+      font-family: var(--font-body);
+      font-size: 14px; font-weight: 600; color: var(--primary);
+    }
+    .stage-time {
+      font-size: 13px; color: var(--body-mid);
+    }
+    .stage-card.dark-stage .stage-time { color: var(--mute); }
+
+    /* ── timeline ── */
+    .timeline-section {
+      background: var(--canvas);
+      padding: var(--sp-4xl) var(--sp-xl);
+    }
+    .timeline {
+      max-width: 760px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .tl-row {
+      display: grid; grid-template-columns: 100px 24px 1fr;
+      gap: var(--sp-lg); align-items: start;
+      padding-bottom: var(--sp-xl);
+      position: relative;
+    }
+    .tl-time {
+      font-family: var(--font-mono);
+      font-size: 13px; color: var(--body-mid);
+      text-align: right; padding-top: 2px;
+      letter-spacing: 0.5px;
+    }
+    .tl-dot-col {
+      display: flex; flex-direction: column; align-items: center;
+    }
+    .tl-dot {
+      width: 10px; height: 10px;
+      background: var(--mute); flex-shrink: 0;
+      margin-top: 7px;
+    }
+    .tl-dot.active { background: var(--primary); }
+    .tl-line {
+      width: 1px; background: var(--mute); flex: 1;
+      margin-top: 4px; min-height: 32px;
+    }
+    .tl-row:last-child .tl-line { display: none; }
+    .tl-label {
+      font-size: 16px; font-weight: 600; color: var(--ink);
+      margin: 0 0 2px;
+    }
+    .tl-detail { font-size: 15px; color: var(--body-mid); margin: 0; }
+
+    /* ── scoring ── */
+    .scoring-section {
+      background: var(--canvas-soft);
+      padding: var(--sp-4xl) var(--sp-xl);
+    }
+    .scoring-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: var(--sp-lg);
+    }
+    .score-card {
+      background: var(--canvas);
+      border-radius: var(--r-md);
+      padding: var(--sp-xl);
+    }
+    .score-card.featured-score {
+      background: var(--ink); color: var(--on-primary);
+    }
+    .score-stage {
+      font-family: var(--font-body);
+      font-size: 11px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--body-mid); margin-bottom: var(--sp-sm);
+    }
+    .score-card.featured-score .score-stage { color: var(--mute); }
+    .score-name {
+      font-family: var(--font-display);
+      font-size: 20px; margin: 0 0 var(--sp-md); color: var(--ink);
+    }
+    .score-card.featured-score .score-name { color: var(--on-primary); }
+    .score-pts {
+      font-family: var(--font-display);
+      font-size: 36px; color: var(--primary); line-height: 1;
+      margin-bottom: var(--sp-sm);
+    }
+    .score-note {
+      font-size: 15px; color: var(--body-mid); line-height: 1.5;
+    }
+    .score-card.featured-score .score-note { color: var(--mute); }
+    .score-bonus { color: var(--primary); font-weight: 600; }
+
+    /* ── rules ── */
+    .rules-section {
+      background: var(--canvas);
+      padding: var(--sp-4xl) var(--sp-xl);
+    }
+    .rules-cols {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--sp-3xl);
+    }
+    .rules-group-title {
+      font-family: var(--font-body);
+      font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--body-mid); margin: 0 0 var(--sp-lg);
+    }
+    .rule-item {
+      display: flex; gap: var(--sp-md);
+      margin-bottom: var(--sp-lg); align-items: flex-start;
+    }
+    .rule-dot {
+      width: 8px; height: 8px;
+      background: var(--primary); flex-shrink: 0; margin-top: 9px;
+    }
+    .rule-dot.warn {
+      width: 4px; height: 4px; margin-top: 11px;
+      background: var(--ink);
+      box-shadow: 4px 0 0 var(--ink), 0 4px 0 var(--ink);
+    }
+    .rule-text { font-size: 16px; color: var(--body-color); line-height: 1.6; }
+
+    /* ── CTA band ── */
+    .cta-band {
+      background: var(--canvas-soft);
+      padding: var(--sp-4xl) var(--sp-xl);
+      text-align: center;
+    }
+    .cta-eyebrow {
+      font-family: var(--font-body);
+      font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--body-mid); margin-bottom: var(--sp-lg);
+    }
+    .cta-headline {
+      font-family: var(--font-display);
+      font-size: clamp(32px, 5vw, 52px);
+      color: var(--ink); margin: 0 0 var(--sp-md);
+    }
+    .cta-sub {
+      font-size: 18px; color: var(--body-color);
+      max-width: 480px; margin: 0 auto var(--sp-2xl);
+      line-height: 1.6;
+    }
+
+    /* ── dark band overrides ── */
+    .band-dark { background: var(--ink); color: var(--on-primary); }
+    .band-dark .section-eyebrow,
+    .band-dark .prize-eyebrow { color: var(--mute); }
+    .band-dark .section-headline { color: var(--on-primary); }
+    .band-dark .section-sub { color: var(--mute); }
+    .band-dark .rule-dot.warn {
+      background: var(--on-primary);
+      box-shadow: 4px 0 0 var(--on-primary), 0 4px 0 var(--on-primary);
+    }
+    .band-dark .rules-group-title { color: var(--mute); }
+    .band-dark .rule-text { color: var(--canvas-soft); }
+    .band-dark .tl-time,
+    .band-dark .tl-detail { color: var(--mute); }
+    .band-dark .tl-label { color: var(--on-primary); }
+    .band-dark .tl-line { background: var(--ink-mid); }
+    .band-dark .tl-dot { background: var(--ink-mid); }
+    .band-dark .tl-dot.active { background: var(--primary); }
+    .cta-actions { display: flex; gap: var(--sp-md); justify-content: center; flex-wrap: wrap; }
+
+    /* ── footer ── */
+    .footer {
+      background: var(--ink);
+      border-top: 1px solid var(--ink-mid);
+      padding: var(--sp-3xl) var(--sp-xl);
+    }
+    .footer-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: var(--sp-xl);
+    }
+    .footer-brand {
+      font-family: var(--font-display);
+      font-size: 22px; letter-spacing: 1px;
+      color: var(--on-primary);
+    }
+    .footer-brand span { color: var(--primary); }
+    .footer-by {
+      font-size: 14px; color: var(--mute); margin-top: var(--sp-xs);
+    }
+    .footer-links {
+      display: flex; gap: var(--sp-xl);
+      list-style: none; margin: 0; padding: 0;
+    }
+    .footer-links a {
+      font-size: 14px; color: var(--mute); text-decoration: none;
+    }
+    .footer-links a:hover { color: var(--on-primary); }
+
+    /* ── responsive ── */
+    @media (max-width: 1023px) {
+      .prize-band-inner {
+        grid-template-columns: 1fr;
+        gap: var(--sp-3xl);
+      }
+    }
+    @media (max-width: 767px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .nav-links { display: none; }
+      .hamburger { display: block; }
+      .rules-cols { grid-template-columns: 1fr; }
+      .prize-tiers { flex-direction: column; }
+      .tl-row { grid-template-columns: 70px 20px 1fr; gap: var(--sp-sm); }
+    }
+
+    /* ── misc ── */
+    .sep { height: 1px; background: var(--mute); opacity: 0.4; }
+    .pill-tag {
+      display: inline-flex; align-items: center;
+      background: var(--canvas-soft);
+      color: var(--ink); font-size: 13px; font-weight: 500;
+      padding: var(--sp-xs) var(--sp-md);
+      border-radius: var(--r-pill);
+      letter-spacing: 0.3px;
+    }
+    .divider-dot { color: var(--mute); margin: 0 4px; }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav class="nav">
+  <a href="#" class="nav-logo">Block<span>Hunt</span> '26</a>
+  <ul class="nav-links">
+    <li><a href="#stages">Stages</a></li>
+    <li><a href="#timeline">Timeline</a></li>
+    <li><a href="#scoring">Scoring</a></li>
+    <li><a href="#rules">Rules</a></li>
+  </ul>
+  <a href="https://unstop.com/hackathons/blockhunt26-indian-institute-of-technology-indian-school-of-mines-iit-ism-dhanbad-1764178" target="_blank" rel="noopener" class="nav-cta">Register on Unstop</a>
+  <button class="hamburger" aria-label="menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">Blockchain Division · Cyber Labs · IIT (ISM) Dhanbad</p>
+      <h1 class="hero-headline">Sort. Mine.<br><span class="accent">Consensus.</span></h1>
+      <p class="hero-sub">
+        A blockchain puzzle hunt for beginners. Five stages take you through hashing, block structure, mining, tamper detection, and smart contracts, and you solve each one by hand.
+      </p>
+      <div class="hero-meta">
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Format</span>
+          <span class="hero-meta-value">Team Contest</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Team Size</span>
+          <span class="hero-meta-value">2 - 3 members</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Duration</span>
+          <span class="hero-meta-value">~3 hours</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Date</span>
+          <span class="hero-meta-value">9 Oct 2026</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Venue</span>
+          <span class="hero-meta-value">Lecture Halls 9 &amp; 10, NLHC</span>
+        </div>
+        <div class="hero-meta-item">
+          <span class="hero-meta-label">Prize Pool</span>
+          <span class="hero-meta-value">₹8,500</span>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a href="https://unstop.com/hackathons/blockhunt26-indian-institute-of-technology-indian-school-of-mines-iit-ism-dhanbad-1764178" target="_blank" rel="noopener" class="btn-primary">Register on Unstop →</a>
+        <a href="#stages" class="btn-secondary">See the stages</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="chain-viz">
+        <div class="block-card dark-block">
+          <div class="block-number">Block #001</div>
+          <div class="block-hash">00a3f7e1c2...</div>
+          <div class="block-data">
+            <span>nonce: 4821</span>
+            <span class="divider-dot">·</span>
+            <span>prev: 0000…</span>
+          </div>
+        </div>
+        <div class="block-arrow">↓</div>
+        <div class="block-card active-block">
+          <div class="block-number">Block #002 - active</div>
+          <div class="block-hash">00b8d2f9a4...</div>
+          <div class="block-data">
+            <span>nonce: 7163</span>
+            <span class="divider-dot">·</span>
+            <span>prev: 00a3…</span>
+          </div>
+        </div>
+        <div class="block-arrow">↓</div>
+        <div class="block-card dark-block">
+          <div class="block-number">Block #003</div>
+          <div class="block-hash">00c1e5b7d2...</div>
+          <div class="block-data">
+            <span>nonce: 2940</span>
+            <span class="divider-dot">·</span>
+            <span>prev: 00b8…</span>
+          </div>
+        </div>
+        <div class="block-arrow" style="color:var(--mute)">↓</div>
+        <div class="block-card" style="border-style:dashed; opacity:.5; text-align:center;">
+          <div class="block-number" style="margin:0">Mine to extend the chain…</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRIZE BAND ── -->
+<section class="prize-band">
+  <div class="prize-band-inner">
+    <div>
+      <p class="prize-eyebrow">Prize Pool</p>
+      <h2 class="prize-headline">₹8,500<br>in prizes</h2>
+      <p class="prize-sub">Top three teams take home cash. Everyone keeps a working sense of how a chain fits together.</p>
+    </div>
+    <div class="prize-tiers">
+      <div class="prize-card featured-prize">
+        <div class="prize-rank">1st Place</div>
+        <div class="prize-amount">₹5,000</div>
+      </div>
+      <div class="prize-card">
+        <div class="prize-rank">2nd Place</div>
+        <div class="prize-amount">₹2,500</div>
+      </div>
+      <div class="prize-card">
+        <div class="prize-rank">3rd Place</div>
+        <div class="prize-amount">₹1,000</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── STAGES ── -->
+<section class="stages-section" id="stages">
+  <div class="container">
+    <p class="section-eyebrow">Five Stages</p>
+    <h2 class="section-headline">From warm-up to fork resolution</h2>
+    <p class="section-sub">
+      Each stage is a live task. You show what you understand by doing it, and the difficulty climbs as you go.
+    </p>
+    <div class="stages-grid">
+      <div class="stage-card dark-stage">
+        <div class="stage-header">
+          <span class="stage-num">Stage 1</span>
+          <span class="stage-badge">15 min</span>
+        </div>
+        <h3 class="stage-title">Sort the Chain</h3>
+        <p class="stage-desc">
+          You get a scattered set of blocks with hashes, previous hashes, and nonces blanked out. Compute the missing values using the platform's hash calculator, match predecessors, and submit the correct chain order. Three guesses max, with a 60-second lockout per wrong attempt.
+        </p>
+        <div class="stage-meta">
+          <span class="stage-points">100 pts + up to 20 speed bonus</span>
+        </div>
+      </div>
+
+      <div class="stage-card">
+        <div class="stage-header">
+          <span class="stage-num">Stage 2</span>
+          <span class="stage-badge">35-45 min</span>
+        </div>
+        <h3 class="stage-title">Mine to Match</h3>
+        <p class="stage-desc">
+          You're handed a difficulty target, such as finding a nonce whose hash starts with "00", and use the hash calculator to search. Most teams split the nonce range across teammates. The backend allows one attempt every 3 seconds, so careful range-splitting across teammates pays off.
+        </p>
+        <div class="stage-meta">
+          <span class="stage-points">150 pts + up to 30 speed bonus</span>
+        </div>
+      </div>
+
+      <div class="stage-card dark-stage">
+        <div class="stage-header">
+          <span class="stage-num">Stage 3</span>
+          <span class="stage-badge">30 min</span>
+        </div>
+        <h3 class="stage-title">Catch the Forger</h3>
+        <p class="stage-desc">
+          Two competing 6-block chains come printed on physical cards and split across your team: one teammate holds the hash fields, another the previous-hash fields, a third the raw block data. Cross-check using the hash calculator, find exactly where a stored previous-hash doesn't match, and explain in writing why that block is invalid.
+        </p>
+        <div class="stage-meta">
+          <span class="stage-points">130 + 20 explanation + up to 20 speed</span>
+        </div>
+      </div>
+
+      <div class="stage-card bonus-stage">
+        <div class="stage-header">
+          <span class="stage-num">Stage 4</span>
+          <span class="stage-badge">Optional Bonus</span>
+        </div>
+        <h3 class="stage-title">Crack the Contract</h3>
+        <p class="stage-desc">
+          A smart contract is live on Ethereum Sepolia testnet. Connect MetaMask to the challenge site, inspect the contract and its ABI through the browser console, call functions, send transactions, and reach the success state without writing any Solidity. Skipping this stage doesn't hurt your base score.
+        </p>
+        <div class="stage-meta">
+          <span class="stage-points">+50 flat on success</span>
+          <span class="stage-time">· no time component</span>
+        </div>
+      </div>
+
+      <div class="stage-card dark-stage" style="grid-column: span 1;">
+        <div class="stage-header">
+          <span class="stage-num">Stage 5</span>
+          <span class="stage-badge">Finalists only</span>
+        </div>
+        <h3 class="stage-title">Consensus Finale</h3>
+        <p class="stage-desc">
+          Organizers merge the mined blocks from Stage 2, across all four to six finalist teams, into one shared pool and load them onto every finalist's laptop. Different teams mined on top of the same earlier blocks, so the pool holds multiple branches. Reconstruct the valid branches, submit the longest one, and watch the leaderboard update live on the projector.
+        </p>
+        <div class="stage-meta">
+          <span class="stage-points">10 pts/valid branch (max 50) + 100 for longest</span>
+          <span class="stage-time">· 20-25 min</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TIMELINE ── -->
+<section class="timeline-section band-dark" id="timeline">
+  <div class="container">
+    <p class="section-eyebrow">Run of Show</p>
+    <h2 class="section-headline">Three hours, start to finish</h2>
+    <p class="section-sub">Doors open at 3:00 PM IST on 9 October 2026 and the programme ends at 6:00 PM. Times below are relative to the 3:00 PM start.</p>
+    <div class="timeline">
+      <div class="tl-row">
+        <div class="tl-time">0:00-0:20</div>
+        <div class="tl-dot-col"><div class="tl-dot active"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Registration &amp; Check-in</p><p class="tl-detail">Lecture Halls 9 and 10, New Lecture Hall Complex. Teams receive unique IDs.</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">0:20-0:35</div>
+        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Opening Ceremony</p><p class="tl-detail">Rules, AI policy, live hash calculator walkthrough. Cheat sheet at every table.</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">0:35-0:50</div>
+        <div class="tl-dot-col"><div class="tl-dot active"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Stage 1: Sort the Chain</p><p class="tl-detail">15 min · guided warm-up</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">0:50-1:35</div>
+        <div class="tl-dot-col"><div class="tl-dot active"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Stage 2: Mine to Match</p><p class="tl-detail">35-45 min · rate-limited backend</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">1:35-2:05</div>
+        <div class="tl-dot-col"><div class="tl-dot active"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Stage 3: Catch the Forger</p><p class="tl-detail">30 min · physical cards + written explanation</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">2:05-2:30</div>
+        <div class="tl-dot-col"><div class="tl-dot active"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Stage 4: Crack the Contract</p><p class="tl-detail">25 min · optional bonus · Sepolia testnet</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">2:30-2:40</div>
+        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Finalist Announcement &amp; Break</p><p class="tl-detail">Top 4-6 teams advance to the finale.</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">2:40-3:05</div>
+        <div class="tl-dot-col"><div class="tl-dot active"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Stage 5: Consensus Finale</p><p class="tl-detail">20-25 min · finalists only · live leaderboard</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">3:05-3:20</div>
+        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Judging Consolidation</p><p class="tl-detail">Automated scoring + judge rubric for Stage 3 explanations.</p></div>
+      </div>
+      <div class="tl-row">
+        <div class="tl-time">3:20-3:35</div>
+        <div class="tl-dot-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+        <div><p class="tl-label">Results &amp; Prize Distribution</p><p class="tl-detail">Final leaderboard on projector. Closing ceremony.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── SCORING ── -->
+<section class="scoring-section" id="scoring">
+  <div class="container">
+    <p class="section-eyebrow">Marking Scheme</p>
+    <h2 class="section-headline">Base points plus speed bonuses.</h2>
+    <p class="section-sub">Each stage pays a base score for a correct solution, plus a speed bonus scaled to the time you have left. Ties go to the earliest final submission.</p>
+    <div class="scoring-grid">
+      <div class="score-card featured-score">
+        <div class="score-stage">Stage 1</div>
+        <div class="score-name">Sort the Chain</div>
+        <div class="score-pts">120</div>
+        <div class="score-note">100 base <span class="score-bonus">+ up to 20</span> speed. 0 pts if unsolved after 3 guesses. 60s lockout between wrong attempts.</div>
+      </div>
+      <div class="score-card">
+        <div class="score-stage">Stage 2</div>
+        <div class="score-name">Mine to Match</div>
+        <div class="score-pts">180</div>
+        <div class="score-note">150 base <span class="score-bonus">+ up to 30</span> speed. One nonce attempt per 3 seconds.</div>
+      </div>
+      <div class="score-card featured-score">
+        <div class="score-stage">Stage 3</div>
+        <div class="score-name">Catch the Forger</div>
+        <div class="score-pts">170</div>
+        <div class="score-note">130 correct block ID + 20 explanation quality <span class="score-bonus">+ up to 20</span> speed. Rubric: accuracy, clarity, correct hash check.</div>
+      </div>
+      <div class="score-card">
+        <div class="score-stage">Stage 4 · Optional</div>
+        <div class="score-name">Crack the Contract</div>
+        <div class="score-pts">+50</div>
+        <div class="score-note">Flat <span class="score-bonus">50 pts</span> on success. No time component, and skipping it costs you nothing.</div>
+      </div>
+      <div class="score-card featured-score">
+        <div class="score-stage">Stage 5 · Finalists</div>
+        <div class="score-name">Consensus Finale</div>
+        <div class="score-pts">150</div>
+        <div class="score-note"><span class="score-bonus">10 pts</span> per valid branch (max 50) <span class="score-bonus">+ 100</span> for correctly identifying the longest branch.</div>
+      </div>
+      <div class="score-card" style="border: 1px solid var(--mute); display:flex; flex-direction:column; justify-content:center; gap:var(--sp-sm);">
+        <div class="score-stage">Tiebreaker</div>
+        <div class="score-name">Earliest timestamp</div>
+        <div class="score-note">Same total score? The team that reached it first ranks higher.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RULES ── -->
+<section class="rules-section band-dark" id="rules">
+  <div class="container">
+    <p class="section-eyebrow">Rulebook</p>
+    <h2 class="section-headline">What you need to know</h2>
+    <p class="section-sub">Break one of these and your team is out. Your check-in packet holds the rest of the rulebook.</p>
+    <div class="rules-cols">
+      <div>
+        <p class="rules-group-title">Eligibility &amp; Teams</p>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Open to all college students across every stream. No prior blockchain knowledge is needed, and there is no restriction on inter-college or inter-specialization teams.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Teams of 2-3 members, finalized before the event begins. No walk-in additions once the opening ceremony starts.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Register through Unstop before the event. Each team gets a unique ID used to track scores across all stages.</p>
+        </div>
+        <p class="rules-group-title" style="margin-top:var(--sp-2xl)">AI &amp; Tools</p>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">AI assistants are allowed for general reference. Each stage still requires live, rate-limited interaction with the puzzle tools by a person at the keyboard.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot warn"></div>
+          <p class="rule-text">Scripting, automating, or bulk-querying the hash calculator or the submission endpoints is a rules violation and can mean disqualification.</p>
+        </div>
+        <p class="rules-group-title" style="margin-top:var(--sp-2xl)">Stage-Specific</p>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Stage 1: 3 guesses max, 60-second lockout between wrong attempts.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Stage 2: backend enforces one nonce attempt every 3 seconds per team.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Stage 4 is optional, and skipping it doesn't affect your base score.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Stage 5 is open only to the top 4-6 teams after Stage 3 plus any Stage 4 bonus.</p>
+        </div>
+      </div>
+      <div>
+        <p class="rules-group-title">Fair Play</p>
+        <div class="rule-item">
+          <div class="rule-dot warn"></div>
+          <p class="rule-text">Sharing block data, hashes, or answers between teams is strictly prohibited and leads to disqualification of all teams involved.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot warn"></div>
+          <p class="rule-text">Physical cards issued in Stage 3 must stay within your assigned table or station at all times.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot warn"></div>
+          <p class="rule-text">Teams may not interfere with, view, or attempt to access another team's session on the event platform.</p>
+        </div>
+        <p class="rules-group-title" style="margin-top:var(--sp-2xl)">Judging &amp; Disputes</p>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Decisions from judges and volunteers on completion, timing, and rubric scores are final.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Raise any dispute with a volunteer or judge at the relevant stage table before moving to the next stage.</p>
+        </div>
+        <p class="rules-group-title" style="margin-top:var(--sp-2xl)">What You Submit</p>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Stage 1: submitted block order. Stage 2: nonce satisfying the difficulty target. Stage 3: identified tampered block + written explanation.</p>
+        </div>
+        <div class="rule-item">
+          <div class="rule-dot"></div>
+          <p class="rule-text">Stage 4 (bonus): successful contract exploit via transaction hash or automatic detection. Stage 5: branch reconstruction (finalists only).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA BAND ── -->
+<section class="cta-band" id="register">
+  <p class="cta-eyebrow">Ready to play?</p>
+  <h2 class="cta-headline">Register on Unstop</h2>
+  <p class="cta-sub">Team up with 2 or 3 people, register before the opening ceremony, and show up ready to think in hashes.</p>
+  <div class="cta-actions">
+    <a href="https://unstop.com/hackathons/blockhunt26-indian-institute-of-technology-indian-school-of-mines-iit-ism-dhanbad-1764178" target="_blank" rel="noopener" class="btn-primary">Register on Unstop →</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Block<span>Hunt</span> '26</div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="#stages">Stages</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#scoring">Scoring</a></li>
+      <li><a href="#rules">Rules</a></li>
+    </ul>
+  </div>
+</footer>
+
+</body>
+</html>
