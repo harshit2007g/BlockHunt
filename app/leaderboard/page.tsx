@@ -44,7 +44,7 @@ export default function LeaderboardPage() {
       <main className="app-main" style={{ maxWidth: 980 }}>
         <p className="eyebrow">Live Leaderboard</p>
         <h1 className="headline">Standings</h1>
-        <p className="sub">Auto-refreshes every 5 seconds. Ties go to the earliest final submission.</p>
+        <p className="sub">Auto-refreshes every 5 seconds. Ties go to the team that reached its score first.</p>
 
         {err && <p className="error-text">{err}</p>}
         {!rows && !err && <span className="spinner" />}
