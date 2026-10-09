@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase-admin";
 
-
 export async function GET(req: Request) {
   const authHeader = req.headers.get("authorization") ?? "";
   const token = authHeader.replace(/^Bearer\s+/i, "");
@@ -19,7 +18,8 @@ export async function GET(req: Request) {
     .eq("auth_uid", userData.user.id)
     .maybeSingle();
 
-  if (!team) return NextResponse.json({ error: "No team row" }, { status: 403 });
+  if (!team)
+    return NextResponse.json({ error: "No team row" }, { status: 403 });
 
   const { data: score } = await db
     .from("scores")
@@ -52,9 +52,12 @@ export async function POST(req: Request) {
   }
 
   const body = (await req.json().catch(() => null)) as { name?: string } | null;
-  const name = (body?.name ?? "").trim();
+  const name = typeof body?.name === "string" ? body.name.trim() : "";
   if (!name || name.length < 2 || name.length > 40) {
-    return NextResponse.json({ error: "Pick a team name (2-40 chars)." }, { status: 400 });
+    return NextResponse.json(
+      { error: "Pick a team name (2-40 chars)." },
+      { status: 400 },
+    );
   }
 
   const { data: existing } = await db
@@ -63,8 +66,17 @@ export async function POST(req: Request) {
     .eq("auth_uid", userData.user.id)
     .maybeSingle();
   if (existing) {
-    await db.from("scores").upsert({ team_id: existing.id }, { onConflict: "team_id" });
-    const { data: score } = await db.from("scores").select("*").eq("team_id", existing.id).maybeSingle();
+    await db
+      .from("scores")
+      .upsert(
+        { team_id: existing.id },
+        { onConflict: "team_id", ignoreDuplicates: true },
+      );
+    const { data: score } = await db
+      .from("scores")
+      .select("*")
+      .eq("team_id", existing.id)
+      .maybeSingle();
     return NextResponse.json({ team: existing, score, reused: true });
   }
 
@@ -76,13 +88,25 @@ export async function POST(req: Request) {
   if (createErr) {
     // first-claim-wins: unique(name) race surfaces as a friendly message
     if ((createErr as { code?: string }).code === "23505") {
-      return NextResponse.json({ error: "That team name is taken. Pick another." }, { status: 409 });
+      return NextResponse.json(
+        { error: "That team name is taken. Pick another." },
+        { status: 409 },
+      );
     }
     return NextResponse.json({ error: createErr.message }, { status: 500 });
   }
 
   // trigger normally creates this; upsert keeps old rows playable
-  await db.from("scores").upsert({ team_id: created.id }, { onConflict: "team_id" });
-  const { data: score } = await db.from("scores").select("*").eq("team_id", created.id).maybeSingle();
+  await db
+    .from("scores")
+    .upsert(
+      { team_id: created.id },
+      { onConflict: "team_id", ignoreDuplicates: true },
+    );
+  const { data: score } = await db
+    .from("scores")
+    .select("*")
+    .eq("team_id", created.id)
+    .maybeSingle();
   return NextResponse.json({ team: created, score, reused: false });
 }

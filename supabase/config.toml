@@ -1,0 +1,22 @@
+project_id = "BlockHunt"
+[api]
+port = 54321
+max_rows = 10000
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+[studio]
+enabled = false
+[auth]
+site_url = "http://127.0.0.1:3000"
+enable_signup = true
+[auth.email]
+enable_signup = true
+enable_confirmations = false
+[analytics]
+enabled = false
+[edge_runtime]
+enabled = false
+[storage]
+enabled = false

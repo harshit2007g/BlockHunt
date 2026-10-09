@@ -1,16 +1,18 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 export const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
-/** Browser client (RLS applies). */
+let browserClient: SupabaseClient | undefined;
+/** One browser auth client; all tabs/components share its refreshed session. */
 export function supabaseBrowser() {
   if (!supabaseUrl || !supabaseAnonKey) {
     throw new Error(
-      "Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY env vars"
+      "Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY env vars",
     );
   }
-  return createClient(supabaseUrl, supabaseAnonKey);
+  browserClient ??= createClient(supabaseUrl, supabaseAnonKey);
+  return browserClient;
 }
 
 /** Server client lives in ./supabase-admin (server-only guarded). */
@@ -26,17 +28,29 @@ export type Team = {
 
 export type Scores = {
   team_id: string;
-  stage1_base: number; stage1_bonus: number;
-  stage2_base: number; stage2_bonus: number;
-  stage3_base: number; stage3_bonus: number; stage3_expl: number;
+  stage1_base: number;
+  stage1_bonus: number;
+  stage2_base: number;
+  stage2_bonus: number;
+  stage3_base: number;
+  stage3_bonus: number;
+  stage3_expl: number;
   stage4_bonus: number;
-  stage5_branches: number; stage5_longest: number;
-  stage1_at: string | null; stage2_at: string | null; stage3_at: string | null;
-  stage4_at: string | null; stage5_at: string | null;
-  stage1_attempts: number; stage1_locked_until: string | null;
-  stage3_attempts: number; stage3_locked_until: string | null;
-  stage4_submitted_at: string | null; stage4_tx_hash: string | null;
-  stage2_last_attempt_at: string | null; stage5_attempts: number;
+  stage5_branches: number;
+  stage5_longest: number;
+  stage1_at: string | null;
+  stage2_at: string | null;
+  stage3_at: string | null;
+  stage4_at: string | null;
+  stage5_at: string | null;
+  stage1_attempts: number;
+  stage1_locked_until: string | null;
+  stage3_attempts: number;
+  stage3_locked_until: string | null;
+  stage4_submitted_at: string | null;
+  stage4_tx_hash: string | null;
+  stage2_last_attempt_at: string | null;
+  stage5_attempts: number;
   total: number;
   last_submit_at: string;
 };

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { supabaseBrowser } from "@/lib/supabase";
 
 type Block = {
   id: number;
@@ -19,94 +20,127 @@ type Block = {
 
 export default function ForksPage() {
   const [blocks, setBlocks] = useState<Block[] | null>(null);
-  const [longest, setLongest] = useState(0);
+
   const [err, setErr] = useState("");
 
   useEffect(() => {
     let alive = true;
     async function poll() {
       try {
-        const res = await fetch("/api/forks");
-        if (!res.ok) throw new Error();
+        const { data } = await supabaseBrowser().auth.getSession();
+        const res = await fetch("/api/forks", {
+          headers: {
+            authorization: `Bearer ${data.session?.access_token ?? ""}`,
+          },
+        });
+        if (!res.ok) {
+          const j = await res.json();
+          throw new Error(j.error);
+        }
         const j = await res.json();
-        if (alive) { setBlocks(j.blocks); setLongest(j.longest); setErr(""); }
-      } catch {
-        if (alive) setErr("Fork pool unavailable. Check that the backend is configured.");
+        if (alive) {
+          setBlocks(j.blocks);
+          setErr("");
+        }
+      } catch (e) {
+        if (alive) {
+          setBlocks(null);
+          setErr(e instanceof Error ? e.message : "Fork pool unavailable");
+        }
       }
     }
     poll();
     const t = setInterval(poll, 5000);
-    return () => { alive = false; clearInterval(t); };
+    return () => {
+      alive = false;
+      clearInterval(t);
+    };
   }, []);
 
-  // group by parent to render levels
-  const levels: Block[][] = [];
-  if (blocks) {
-    const byId = new Map(blocks.map((b) => [b.id, b]));
-    const placed = new Set<number>();
-    let frontier = blocks.filter((b) => b.parent_block === null || !byId.has(b.parent_block));
-    while (frontier.length && placed.size < blocks.length) {
-      levels.push(frontier);
-      for (const b of frontier) placed.add(b.id);
-      const next = blocks.filter(
-        (b) => !placed.has(b.id) && b.parent_block !== null && placed.has(b.parent_block)
-      );
-      frontier = next;
-    }
-    const rest = blocks.filter((b) => !placed.has(b.id));
-    if (rest.length) levels.push(rest);
-  }
+  const levels = blocks ? [[...blocks].sort((a, b) => a.id - b.id)] : [];
 
   return (
     <div className="app-shell">
       <nav className="app-nav">
-        <Link href="/" className="app-brand">Block<span>Hunt</span> &apos;26</Link>
+        <Link href="/" className="app-brand">
+          Block<span>Hunt</span> &apos;26
+        </Link>
         <ul className="app-nav-links">
-          <li><Link href="/play">Team Console</Link></li>
-          <li><Link href="/leaderboard">Leaderboard</Link></li>
+          <li>
+            <Link href="/play">Team Console</Link>
+          </li>
+          <li>
+            <Link href="/leaderboard">Leaderboard</Link>
+          </li>
         </ul>
       </nav>
       <main className="app-main" style={{ maxWidth: 1100 }}>
         <p className="eyebrow">Consensus Finale · Fork Pool</p>
         <h1 className="headline">The shared chain pool</h1>
         <p className="sub">
-          All accepted Stage 2 blocks sit here, linked prev_hash to hash. Finalists
-          reconstruct these branches. Longest valid branch right now:{" "}
-          <strong className="owner-color">{longest} block{longest === 1 ? "" : "s"}</strong>.
+          Frozen finalist blocks. Recompute their teaching hashes and follow
+          declared parent IDs from genesis. Find the longest valid path
+          yourselves.
         </p>
 
         {err && <p className="error-text">{err}</p>}
         {!blocks && !err && <span className="spinner" />}
         {blocks && blocks.length === 0 && (
-          <p className="muted">Pool is empty. Blocks appear as teams mine them in Stage 2.</p>
+          <p className="muted">
+            Pool is empty. Blocks appear as teams mine them in Stage 2.
+          </p>
         )}
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--sp-lg)" }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "var(--sp-lg)",
+          }}
+        >
           {levels.map((level, li) => (
             <div key={li}>
-              {li > 0 && <div className="block-arrow" style={{ marginBottom: 6 }}>↓</div>}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: "var(--sp-md)" }}>
+              {li > 0 && (
+                <div className="block-arrow" style={{ marginBottom: 6 }}>
+                  ↓
+                </div>
+              )}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
+                  gap: "var(--sp-md)",
+                }}
+              >
                 {level.map((b) => {
-                  const showValid = b.recomputed_valid ?? b.valid;
                   return (
-                  <div key={b.id} className={`block-card${showValid ? " active-block" : ""}`} style={{ marginBottom: 0 }}>
-                    <div className="block-number">
-                      #{b.id} · block {b.block_index} · {b.team_name}
+                    <div
+                      key={b.id}
+                      className="card"
+                      style={{ marginBottom: 0, overflowWrap: "anywhere" }}
+                    >
+                      <div className="block-number">
+                        #{b.id} · block {b.block_index} · {b.team_name}
+                      </div>
+                      <div
+                        className="mono"
+                        style={{ fontSize: 22, margin: "12px 0" }}
+                      >
+                        {b.hash}
+                      </div>
+                      <div style={{ display: "grid", gap: 6 }}>
+                        <span>prev: {b.prev_hash}</span>
+                        <span>nonce: {b.nonce}</span>
+                        {b.data ? (
+                          <>
+                            <span>data: {b.data}</span>
+                          </>
+                        ) : null}
+                      </div>
+                      <div className="mono">
+                        Parent ID: {b.parent_block ?? "genesis"}
+                      </div>
                     </div>
-                    <div className="block-hash">{b.hash}</div>
-                    <div className="block-data">
-                      <span>prev: {b.prev_hash}</span>
-                      <span className="divider-dot">·</span>
-                      <span>nonce: {b.nonce}</span>
-                      {b.data ? (
-                        <>
-                          <span className="divider-dot">·</span>
-                          <span>data: {b.data}</span>
-                        </>
-                      ) : null}
-                    </div>
-                    {!showValid && <div className="error-text">invalid (excluded)</div>}
-                  </div>
                   );
                 })}
               </div>

@@ -46,14 +46,26 @@ export default function Home() {
           Block<span>Hunt</span> &apos;26
         </Link>
         <ul className="nav-links">
-          <li><a href="#stages">Stages</a></li>
-          <li><a href="#scoring">Scoring</a></li>
-          <li><a href="#rules">Rules</a></li>
-          <li><Link href="/leaderboard">Leaderboard</Link></li>
-          <li><Link href="/forks">Fork Pool</Link></li>
+          <li>
+            <a href="#stages">Stages</a>
+          </li>
+          <li>
+            <a href="#scoring">Scoring</a>
+          </li>
+          <li>
+            <a href="#rules">Rules</a>
+          </li>
+          <li>
+            <Link href="/leaderboard">Leaderboard</Link>
+          </li>
+          <li>
+            <Link href="/forks">Fork Pool</Link>
+          </li>
         </ul>
         <div className="nav-right">
-          <Link href="/play" className="nav-cta">Team Login →</Link>
+          <Link href="/play" className="nav-cta">
+            Team Login →
+          </Link>
         </div>
       </nav>
 
@@ -62,7 +74,8 @@ export default function Home() {
         <div className="hero-inner">
           <div>
             <p className="hero-eyebrow">
-              Blockchain Division · Cyber Labs · IIT (ISM) Dhanbad · 9 Oct 2026
+              Blockchain Division · Cyber Labs · IIT (ISM) Dhanbad · Event date
+              announced at registration
             </p>
             <h1 className="hero-headline">
               Sort. Mine.
@@ -71,9 +84,9 @@ export default function Home() {
             </h1>
             <p className="hero-sub">
               This is the BlockHunt &apos;26 event platform. Log in with your
-              team ID for the hash calculator and your stage submissions.
-              Scores update live. The projector leaderboard and the Stage 5 fork
-              pool are public and need no login.
+              team ID for the hash calculator and your stage submissions. Scores
+              update live. The projector leaderboard and the Stage 5 fork pool
+              are public and need no login.
             </p>
             <div className="hero-actions">
               <Link href="/play" className="btn-primary">
@@ -87,16 +100,40 @@ export default function Home() {
               </Link>
             </div>
             <div className="hero-hint">
-              New here? You register through Unstop. Your team login is
-              created at check-in on the day of the event.
+              New here? You register through Unstop. Your team login is created
+              at check-in on the day of the event.
             </div>
           </div>
           <div className="hero-visual">
             <div className="chain-viz">
-              <BlockCard num="Block #001" hash="00a3f7e1c2..." nonce="4821" prev="0000…" />
-              <BlockCard num="Block #002" hash="00b8d2f9a4..." nonce="7163" prev="00a3…" active dark={false} />
-              <BlockCard num="Block #003" hash="00c1e5b7d2..." nonce="2940" prev="00b8…" />
-              <div className="block-card" style={{ borderStyle: "dashed", opacity: 0.5, textAlign: "center" }}>
+              <BlockCard
+                num="Block #001"
+                hash="0041daaf"
+                nonce="4821"
+                prev="00000000"
+              />
+              <BlockCard
+                num="Block #002"
+                hash="039b20c5"
+                nonce="7163"
+                prev="0041daaf"
+                active
+                dark={false}
+              />
+              <BlockCard
+                num="Block #003"
+                hash="04755f1b"
+                nonce="2940"
+                prev="039b20c5"
+              />
+              <div
+                className="block-card"
+                style={{
+                  borderStyle: "dashed",
+                  opacity: 0.5,
+                  textAlign: "center",
+                }}
+              >
                 <div className="block-number" style={{ margin: 0 }}>
                   Mine to extend the chain…
                 </div>
@@ -129,7 +166,7 @@ export default function Home() {
             <Link href="/forks" className="quick-card">
               <div className="quick-title">Fork Pool</div>
               <div className="quick-desc">
-                All mined blocks from Stage 2 sit in one shared pool. Study the
+                Finalists inspect a frozen pool when Stage 5 opens. Study the
                 valid branches before the Consensus Finale begins.
               </div>
               <div className="quick-go">Open /forks →</div>
@@ -144,9 +181,9 @@ export default function Home() {
           <p className="section-eyebrow">Five Stages</p>
           <h2 className="section-headline">From warm-up to fork resolution</h2>
           <p className="section-sub">
-            Each stage is a live task. You show what you understand by doing
-            it, and the difficulty climbs as you go. Stages unlock from your
-            team console as the organizers open them.
+            Each stage is a live task. You show what you understand by doing it,
+            and the difficulty climbs as you go. Stages unlock from your team
+            console as the organizers open them.
           </p>
           <div className="stages-grid">
             <div className="stage-card dark-stage">
@@ -156,14 +193,15 @@ export default function Home() {
               </div>
               <h3 className="stage-title">Sort the Chain</h3>
               <p className="stage-desc">
-                You get a scattered set of blocks with hashes, previous hashes,
-                and nonces blanked out. Compute the missing values using the
-                hash calculator, match predecessors, and submit the correct
-                chain order. Three guesses max, with a 60-second lockout per
-                wrong attempt.
+                You get six shuffled digital blocks unique to your team. Follow
+                previous hashes from genesis and use the teaching calculator to
+                verify the fields. Submit each label once in chain order. Three
+                guesses max, with a 60-second lockout after a wrong attempt.
               </p>
               <div className="stage-meta">
-                <span className="stage-points">100 pts + up to 20 speed bonus</span>
+                <span className="stage-points">
+                  100 pts + up to 20 speed bonus
+                </span>
               </div>
             </div>
 
@@ -174,15 +212,16 @@ export default function Home() {
               </div>
               <h3 className="stage-title">Mine to Match</h3>
               <p className="stage-desc">
-                You&apos;re handed a difficulty target, such as finding a nonce
-                whose hash starts with &quot;00&quot;, and use the hash
-                calculator to search. Most teams split the nonce range across
-                teammates. The backend allows one attempt every 3 seconds, so
-                careful range-splitting across teammates pays off. Accepted
-                blocks go into the shared fork pool.
+                Try nonces against a team-bound server challenge. Every proof
+                attempt shares a three-second team cooldown, including attempts
+                from multiple tabs. Your first accepted block scores; keep
+                extending or forking your own blocks to build the finale pool.
+                The teaching calculator cannot compute mining proofs.
               </p>
               <div className="stage-meta">
-                <span className="stage-points">150 pts + up to 30 speed bonus</span>
+                <span className="stage-points">
+                  150 pts + up to 30 speed bonus
+                </span>
               </div>
             </div>
 
@@ -193,15 +232,15 @@ export default function Home() {
               </div>
               <h3 className="stage-title">Catch the Forger</h3>
               <p className="stage-desc">
-                Two competing 6-block chains come printed on physical cards and
-                split across your team: one teammate holds the hash fields,
-                another the previous-hash fields, a third the raw block data.
-                Cross-check using the hash calculator, find exactly where a
-                stored previous-hash doesn&apos;t match, and explain in writing
-                why that block is invalid.
+                Two six-block chains appear in your team console. Split the
+                data, hash and link tabs among teammates, cross-check with the
+                teaching calculator, identify the changed block and explain the
+                evidence. All investigation material is digital.
               </p>
               <div className="stage-meta">
-                <span className="stage-points">130 + 20 explanation + up to 20 speed</span>
+                <span className="stage-points">
+                  130 + 20 explanation + up to 20 speed
+                </span>
               </div>
             </div>
 
@@ -210,13 +249,13 @@ export default function Home() {
                 <span className="stage-num">Stage 4</span>
                 <span className="stage-badge bonus">Optional Bonus</span>
               </div>
-              <h3 className="stage-title">Crack the Contract</h3>
+              <h3 className="stage-title">Collision Hunt</h3>
               <p className="stage-desc">
-                A smart contract is live on Ethereum Sepolia testnet. Connect
-                MetaMask, inspect the contract and its ABI through the browser
-                console, call functions, send transactions, and reach the
-                success state without writing any Solidity. Skipping this stage
-                doesn&apos;t hurt your base score.
+                Find two different nonces that produce your assigned target
+                teaching hash with fixed data. Discover why nonce digit sums
+                collide and how weak hashes can break a contract condition.
+                Success automatically awards 50 points; no wallet or transaction
+                is needed.
               </p>
               <div className="stage-meta">
                 <span className="stage-points">+50 flat on success</span>
@@ -231,14 +270,16 @@ export default function Home() {
               </div>
               <h3 className="stage-title">Consensus Finale</h3>
               <p className="stage-desc">
-                The mined blocks from Stage 2, across all finalist teams, are
-                merged into one shared pool. Different teams mined on top of the
-                same earlier blocks, so the pool holds multiple branches.
-                Reconstruct the valid branches, submit the longest one, and watch the leaderboard update live on
-                the projector.
+                Finalists receive a frozen pool containing their accepted Stage
+                2 blocks. Roots share the genesis convention, and teams can fork
+                by mining different children of their own earlier blocks. Verify
+                hashes and parent IDs, reconstruct distinct paths and choose a
+                longest valid chain.
               </p>
               <div className="stage-meta">
-                <span className="stage-points">10 pts/branch (max 50) + 100 for longest</span>
+                <span className="stage-points">
+                  10 pts/branch (max 50) + 100 for longest
+                </span>
                 <span className="stage-time">· 20-25 min</span>
               </div>
             </div>
@@ -262,8 +303,9 @@ export default function Home() {
               <div className="score-name">Sort the Chain</div>
               <div className="score-pts">120</div>
               <div className="score-note">
-                100 base <span className="score-bonus">+ up to 20</span> speed. 0 pts if
-                unsolved after 3 guesses. 60s lockout between wrong attempts.
+                100 base <span className="score-bonus">+ up to 20</span> speed.
+                0 pts if unsolved after 3 guesses. 60s lockout between wrong
+                attempts.
               </div>
             </div>
             <div className="score-card">
@@ -271,8 +313,8 @@ export default function Home() {
               <div className="score-name">Mine to Match</div>
               <div className="score-pts">180</div>
               <div className="score-note">
-                150 base <span className="score-bonus">+ up to 30</span> speed. One nonce
-                attempt per 3 seconds.
+                150 base <span className="score-bonus">+ up to 30</span> speed.
+                One nonce attempt per 3 seconds.
               </div>
             </div>
             <div className="score-card featured-score">
@@ -281,17 +323,17 @@ export default function Home() {
               <div className="score-pts">170</div>
               <div className="score-note">
                 130 correct block ID + 20 explanation quality{" "}
-                <span className="score-bonus">+ up to 20</span> speed. Rubric: accuracy,
-                clarity, correct hash check.
+                <span className="score-bonus">+ up to 20</span> speed. Rubric:
+                accuracy, clarity, correct hash check.
               </div>
             </div>
             <div className="score-card">
               <div className="score-stage">Stage 4 · Optional</div>
-              <div className="score-name">Crack the Contract</div>
+              <div className="score-name">Collision Hunt</div>
               <div className="score-pts">+50</div>
               <div className="score-note">
-                Flat <span className="score-bonus">50 pts</span> on success. No time
-                component, and skipping it costs you nothing.
+                Flat <span className="score-bonus">50 pts</span> on success. No
+                time component, and skipping it costs you nothing.
               </div>
             </div>
             <div className="score-card featured-score">
@@ -299,11 +341,21 @@ export default function Home() {
               <div className="score-name">Consensus Finale</div>
               <div className="score-pts">150</div>
               <div className="score-note">
-                <span className="score-bonus">10 pts</span> per valid branch (max 50){" "}
-                <span className="score-bonus">+ 100</span> for the longest branch.
+                <span className="score-bonus">10 pts</span> per valid branch
+                (max 50) <span className="score-bonus">+ 100</span> for the
+                longest branch.
               </div>
             </div>
-            <div className="score-card" style={{ border: "1px solid var(--mute)", display: "flex", flexDirection: "column", justifyContent: "center", gap: "var(--sp-sm)" }}>
+            <div
+              className="score-card"
+              style={{
+                border: "1px solid var(--mute)",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                gap: "var(--sp-sm)",
+              }}
+            >
               <div className="score-stage">Tiebreaker</div>
               <div className="score-name">Earliest timestamp</div>
               <div className="score-note">
@@ -321,7 +373,7 @@ export default function Home() {
           <h2 className="section-headline">What you need to know</h2>
           <p className="section-sub">
             These are the rules that get teams disqualified. The full rulebook
-            is in your check-in packet.
+            is available in the team console and event guide.
           </p>
           <div className="rules-cols">
             <div>
@@ -335,10 +387,15 @@ export default function Home() {
                   <p className="rule-text">{t}</p>
                 </div>
               ))}
-              <p className="rules-group-title" style={{ marginTop: "var(--sp-2xl)" }}>Fair Play</p>
+              <p
+                className="rules-group-title"
+                style={{ marginTop: "var(--sp-2xl)" }}
+              >
+                Fair Play
+              </p>
               {[
                 "Sharing block data, hashes, or answers between teams is strictly prohibited and leads to disqualification of all teams involved.",
-                "Physical cards issued in Stage 3 must stay within your assigned table or station at all times.",
+                "Stage 3 evidence is unique to each team and appears only while the stage is open.",
                 "Teams may not interfere with, view, or attempt to access another team's session on the event platform.",
               ].map((t) => (
                 <div className="rule-item" key={t.slice(0, 16)}>
@@ -360,7 +417,12 @@ export default function Home() {
                   <p className="rule-text">{t}</p>
                 </div>
               ))}
-              <p className="rules-group-title" style={{ marginTop: "var(--sp-2xl)" }}>Judging &amp; Disputes</p>
+              <p
+                className="rules-group-title"
+                style={{ marginTop: "var(--sp-2xl)" }}
+              >
+                Judging &amp; Disputes
+              </p>
               {[
                 "Decisions from judges and volunteers on completion, timing, and rubric scores are final.",
                 "Raise any dispute with a volunteer or judge at the relevant stage table before moving to the next stage.",
@@ -384,8 +446,12 @@ export default function Home() {
           watch the fork pool for the longest branch.
         </p>
         <div className="cta-actions">
-          <Link href="/play" className="btn-primary">Team Login →</Link>
-          <Link href="/leaderboard" className="btn-secondary">Leaderboard</Link>
+          <Link href="/play" className="btn-primary">
+            Team Login →
+          </Link>
+          <Link href="/leaderboard" className="btn-secondary">
+            Leaderboard
+          </Link>
         </div>
       </section>
 
@@ -396,12 +462,24 @@ export default function Home() {
             Block<span>Hunt</span> &apos;26
           </div>
           <ul className="footer-links">
-            <li><a href="#stages">Stages</a></li>
-            <li><a href="#scoring">Scoring</a></li>
-            <li><a href="#rules">Rules</a></li>
-            <li><Link href="/leaderboard">Leaderboard</Link></li>
-            <li><Link href="/forks">Fork Pool</Link></li>
-            <li><Link href="/play">Team Login</Link></li>
+            <li>
+              <a href="#stages">Stages</a>
+            </li>
+            <li>
+              <a href="#scoring">Scoring</a>
+            </li>
+            <li>
+              <a href="#rules">Rules</a>
+            </li>
+            <li>
+              <Link href="/leaderboard">Leaderboard</Link>
+            </li>
+            <li>
+              <Link href="/forks">Fork Pool</Link>
+            </li>
+            <li>
+              <Link href="/play">Team Login</Link>
+            </li>
           </ul>
         </div>
       </footer>

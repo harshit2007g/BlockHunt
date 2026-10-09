@@ -1,0 +1,274 @@
+{
+  "teams": 20,
+  "finalists": 4,
+  "checks": [
+    "20 real local Supabase Auth accounts; browser claim for a precreated account",
+    "Closed stages, nonadmin controls, raw inserts, pool reads, secrets and scoring RPC rejected; own-score RLS verified",
+    "20 team-specific sorting puzzles solved; concurrent wrong guesses consume one attempt; reload retains lockout; re-open preserves clock",
+    "20 accepted server-bound mining proofs; copied challenge and missing parent rejected; cooldown/race single winner; extra mining keeps tie timestamp; nonce cap clears",
+    "20 digital investigations solved from evidence; split tabs usable; admin rubric points validated",
+    "20 collisions automatically scored; four leaders selected; finalist-only frozen pool; no longest disclosure; atomic finale; consistent totals; expired sessions/windows; desktop/mobile/reload flows"
+  ],
+  "finalLeaderboard": [
+    {
+      "rank": 1,
+      "team": "Team00-56eee116",
+      "total": 670,
+      "lastSubmit": "2026-10-09T05:29:12.950827+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 170,
+        "s4": 50,
+        "s5": 150
+      }
+    },
+    {
+      "rank": 2,
+      "team": "Team01-56eee116",
+      "total": 669,
+      "lastSubmit": "2026-10-09T05:29:13.731436+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 169,
+        "s4": 50,
+        "s5": 150
+      }
+    },
+    {
+      "rank": 3,
+      "team": "Team02-56eee116",
+      "total": 669,
+      "lastSubmit": "2026-10-09T05:29:13.900529+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 169,
+        "s4": 50,
+        "s5": 150
+      }
+    },
+    {
+      "rank": 4,
+      "team": "Team03-56eee116",
+      "total": 669,
+      "lastSubmit": "2026-10-09T05:29:13.960154+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 169,
+        "s4": 50,
+        "s5": 150
+      }
+    },
+    {
+      "rank": 5,
+      "team": "Team04-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.258715+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 6,
+      "team": "Team05-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.284461+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 7,
+      "team": "Team06-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.2861+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 8,
+      "team": "Team10-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.286423+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 9,
+      "team": "Team19-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.303205+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 10,
+      "team": "Team09-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.308237+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 11,
+      "team": "Team16-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.321546+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 12,
+      "team": "Team07-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.334176+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 13,
+      "team": "Team08-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.346852+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 14,
+      "team": "Team14-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.346944+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 15,
+      "team": "Team11-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.378551+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 16,
+      "team": "Team17-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.379151+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 17,
+      "team": "Team13-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.379611+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 18,
+      "team": "Team15-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.381363+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 19,
+      "team": "Team18-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.382285+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    },
+    {
+      "rank": 20,
+      "team": "Team12-56eee116",
+      "total": 500,
+      "lastSubmit": "2026-10-09T05:29:12.382701+00:00",
+      "stages": {
+        "s1": 120,
+        "s2": 180,
+        "s3": 150,
+        "s4": 50,
+        "s5": 0
+      }
+    }
+  ]
+}
