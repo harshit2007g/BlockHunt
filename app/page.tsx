@@ -85,8 +85,8 @@ export default function Home() {
             <p className="hero-sub">
               This is the BlockHunt &apos;26 event platform. Log in with your
               team ID for the hash calculator and your stage submissions. Scores
-              update live. The projector leaderboard and the Stage 5 fork pool
-              are public and need no login.
+              update live. The projector leaderboard is public. The Stage 5
+              fork pool opens only to logged-in finalists during the finale.
             </p>
             <div className="hero-actions">
               <Link href="/play" className="btn-primary">
@@ -159,15 +159,15 @@ export default function Home() {
               <div className="quick-title">Live Leaderboard</div>
               <div className="quick-desc">
                 The projector view. Scores update in real time as teams submit.
-                Tiebreak by earliest final submission.
+                Ties go to the team that reached its score first.
               </div>
               <div className="quick-go">Open /leaderboard →</div>
             </Link>
             <Link href="/forks" className="quick-card">
               <div className="quick-title">Fork Pool</div>
               <div className="quick-desc">
-                Finalists inspect a frozen pool when Stage 5 opens. Study the
-                valid branches before the Consensus Finale begins.
+                Logged-in finalists inspect a frozen pool while Stage 5 is
+                open. Verify the blocks and reconstruct valid branches.
               </div>
               <div className="quick-go">Open /forks →</div>
             </Link>
@@ -294,8 +294,8 @@ export default function Home() {
           <h2 className="section-headline">Base points plus speed bonuses.</h2>
           <p className="section-sub">
             Each stage pays a base score for a correct solution, plus a speed
-            bonus scaled to the time you have left. Ties go to the earliest
-            final submission.
+            bonus scaled to the time you have left. Ties go to the team that
+            reached its score first.
           </p>
           <div className="scoring-grid">
             <div className="score-card featured-score">
